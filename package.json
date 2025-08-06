@@ -1,0 +1,14 @@
+{
+  "name": "x-profile-business-card-creator",
+  "version": "1.0.0",
+  "description": "Scrape X.com profiles and generate business card images",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "setup": "npx playwright install chromium && npx playwright install-deps"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
