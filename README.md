@@ -1,122 +1,66 @@
-# X.com Profile Business Card Creator
+# X Business Card Generator
 
-A tool that scrapes X.com (Twitter) profiles and generates professional business cards in standard dimensions (86mm x 54mm).
+Turn your X profile into a business card because apparently that's what we're doing now.
 
-## Features
+## What's This?
 
-- Scrapes public X.com profiles
-- Extracts profile information including:
-  - Profile picture
-  - Header/banner image
-  - Name and handle
-  - Bio/description
-  - Location
-  - Website
-  - Join date
-- Generates a business card image with all profile elements
-- Outputs in standard business card dimensions (86mm x 54mm)
-- Supports both dark and light themes
+A tool that scrapes X profiles and generates sleek business cards. Perfect for when you need to look professional but your entire personality is just tweets.
 
-## Installation
+## Examples
 
-1. Clone or download this project
-2. Install dependencies:
+Because seeing is believing:
+
+![Dark Mode Example](outputs/asynchronous_x_business_card_dark.png)
+![Light Mode Example](outputs/asynchronous_x_business_card_light.png)
+
+## Quick Start
+
 ```bash
+# Install dependencies (one-time suffering)
 npm install
 npx playwright install chromium
-```
 
-If you encounter issues with browser dependencies, you may need to run:
-```bash
-sudo npx playwright install-deps
-```
+# Stalk a single person
+npm start elonmusk        # dark mode (for edgelords)
+npm start elonmusk light  # light mode (for normies)
 
-## Usage
-
-### Option 1: Single username as argument
-```bash
-# Dark theme (default)
-npm start elonmusk
-
-# Light theme
-npm start elonmusk light
-```
-
-### Option 2: Batch processing from text file
-Create a text file with usernames (one per line):
-```
-elonmusk
-BillGates
-sundarpichai
-```
-
-Then run:
-```bash
-# Dark theme (default)
-npm start usernames.txt
-
-# Light theme
-npm start usernames.txt light
-```
-
-This will:
-- Process each username one by one
-- Save all generated cards in the `outputs` folder
-- Show a summary of successful and failed profiles
-
-### Option 3: Interactive mode
-```bash
-npm start
-```
-Then choose between:
-- (1) Single username processing (will prompt for theme)
-- (2) Batch file processing
-
-### Option 4: Direct node execution
-```bash
-# Dark theme
-node index.js username
-node index.js username dark
-
-# Light theme
-node index.js username light
-
-# Batch processing
-node index.js usernames.txt light
+# Mass surveillance
+echo -e "elonmusk\nsundarpichai\nsatyanadella" > targets.txt
+npm start targets.txt light
 ```
 
 ## Output
 
-All business cards are saved in the `outputs` folder:
-- Single user: `outputs/<username>_business_card_<theme>.png`
-- Batch processing: `outputs/<username>_business_card_<theme>.png`
+Cards get yeeted into the `outputs/` folder as `username_business_card_theme.png`
 
-Example filenames:
-- `outputs/elonmusk_business_card_dark.png`
-- `outputs/elonmusk_business_card_light.png`
+## Features
 
-The business card includes:
-- Header banner image (top section)
-- Profile picture (circular, overlapping header)
-- Name and @handle
-- Bio/description (truncated if too long)
-- Location, website, and join date (bottom details)
-- X logo watermark
+- Scrapes profile pics, headers, bios, and all that jazz
+- Standard business card size (86mm x 54mm)
+- Dark/light themes for all your mood swings
+- Batch processing for when you're feeling extra
 
 ## Requirements
 
-- Node.js 18+ 
-- Internet connection
-- The X.com profile must be public
+- Node.js 18+ (this ain't your grandma's JavaScript)
+- Internet (duh)
+- Public X profile(s)
+
+## Legal Stuff
+
+This tool respects robots.txt about as much as X respects your timeline algorithm. Use responsibly or whatever.
 
 ## Troubleshooting
 
-If the tool fails to scrape a profile:
-1. Verify the username is correct (without the @ symbol)
-2. Ensure the profile is public
-3. Check your internet connection
-4. Try running with a different profile to test
+**It's not working!**
+- Check if the profile exists and is public
+- Make sure you didn't typo the username (it happens)
+- Try turning it off and on again
 
-## Note
+**Still not working?**
+- X probably changed their layout again
+- Open an issue and complain
 
-This tool uses web scraping and may be affected by changes to X.com's website structure. It's designed for personal use and should be used responsibly in accordance with X.com's terms of service.
+---
+
+*Made with 🖤 and Claude Code*
