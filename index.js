@@ -18,7 +18,7 @@ const rl = readline.createInterface({
 
 const question = (query) => new Promise((resolve) => rl.question(query, resolve));
 
-async function processSingleUsername(username) {
+async function processSingleUsername(username, theme = 'dark') {
   const cleanUsername = username.replace('@', '').trim();
   
   console.log(`\nFetching profile data for @${cleanUsername}...`);
@@ -37,11 +37,12 @@ async function processSingleUsername(username) {
   console.log(`Location: ${profileData.location || 'N/A'}`);
   console.log(`Website: ${profileData.website || 'N/A'}`);
   console.log(`Join Date: ${profileData.joinDate || 'N/A'}`);
+  console.log(`Theme: ${theme}`);
   
   return { profileData, cleanUsername };
 }
 
-async function processBatchFile(filePath) {
+async function processBatchFile(filePath, theme = 'dark') {
   try {
     // Read the file
     const fileContent = await fs.readFile(filePath, 'utf-8');
@@ -57,10 +58,9 @@ async function processBatchFile(filePath) {
     console.log(`Found ${usernames.length} username(s) to process`);
     
     // Create output folder
-    const timestamp = new Date().toISOString().replace(/:/g, '-').split('.')[0];
-    const outputFolder = join(process.cwd(), `business_cards_${timestamp}`);
+    const outputFolder = join(process.cwd(), 'outputs');
     await fs.mkdir(outputFolder, { recursive: true });
-    console.log(`\nOutput folder created: ${outputFolder}`);
+    console.log(`\nOutput folder: ${outputFolder}`);
     
     // Process each username
     const results = { success: [], failed: [] };
@@ -71,13 +71,13 @@ async function processBatchFile(filePath) {
       console.log('='.repeat(50));
       
       try {
-        const { profileData, cleanUsername } = await processSingleUsername(username);
+        const { profileData, cleanUsername } = await processSingleUsername(username, theme);
         
-        const outputFilename = `${cleanUsername}_business_card.png`;
+        const outputFilename = `${cleanUsername}_business_card_${theme}.png`;
         const outputPath = join(outputFolder, outputFilename);
         
         console.log('\nGenerating business card...');
-        await generateBusinessCard(profileData, outputPath);
+        await generateBusinessCard(profileData, outputPath, theme);
         
         console.log(`✅ Business card successfully created!`);
         console.log(`📁 Saved as: ${outputPath}`);
@@ -136,13 +136,18 @@ async function main() {
           process.exit(1);
         }
         
-        const { profileData, cleanUsername } = await processSingleUsername(username);
+        const theme = await question('Enter theme (dark/light) [default: dark]: ') || 'dark';
+        const { profileData, cleanUsername } = await processSingleUsername(username, theme);
         
-        const outputFilename = `${cleanUsername}_business_card.png`;
-        const outputPath = join(process.cwd(), outputFilename);
+        // Create output folder
+        const outputFolder = join(process.cwd(), 'outputs');
+        await fs.mkdir(outputFolder, { recursive: true });
+        
+        const outputFilename = `${cleanUsername}_business_card_${theme}.png`;
+        const outputPath = join(outputFolder, outputFilename);
         
         console.log('\nGenerating business card...');
-        await generateBusinessCard(profileData, outputPath);
+        await generateBusinessCard(profileData, outputPath, theme);
         
         console.log(`\n✅ Business card successfully created!`);
         console.log(`📁 Saved as: ${outputPath}`);
@@ -150,16 +155,23 @@ async function main() {
       }
     } else if (inputArg.endsWith('.txt')) {
       // Batch file mode
-      await processBatchFile(inputArg);
+      const theme = process.argv[3] || 'dark';
+      await processBatchFile(inputArg, theme);
     } else {
       // Single username mode
-      const { profileData, cleanUsername } = await processSingleUsername(inputArg);
+      // Check if second argument is theme
+      const theme = process.argv[3] || 'dark';
+      const { profileData, cleanUsername } = await processSingleUsername(inputArg, theme);
       
-      const outputFilename = `${cleanUsername}_business_card.png`;
-      const outputPath = join(process.cwd(), outputFilename);
+      // Create output folder
+      const outputFolder = join(process.cwd(), 'outputs');
+      await fs.mkdir(outputFolder, { recursive: true });
+      
+      const outputFilename = `${cleanUsername}_business_card_${theme}.png`;
+      const outputPath = join(outputFolder, outputFilename);
       
       console.log('\nGenerating business card...');
-      await generateBusinessCard(profileData, outputPath);
+      await generateBusinessCard(profileData, outputPath, theme);
       
       console.log(`\n✅ Business card successfully created!`);
       console.log(`📁 Saved as: ${outputPath}`);
