@@ -37,15 +37,15 @@ export async function generateBusinessCard(profileData, outputPath = 'business_c
   
   // Determine description font size based on length
   const descriptionLength = profileData.description ? profileData.description.length : 0;
-  let descriptionFontSize = 44;
+  let descriptionFontSize = 36;
   let descriptionLineClamp = 3;
   
   if (descriptionLength > 100) {
-    descriptionFontSize = 32;
+    descriptionFontSize = 28;
     descriptionLineClamp = 3;
   }
   if (descriptionLength > 140) {
-    descriptionFontSize = 28;
+    descriptionFontSize = 24;
     descriptionLineClamp = 3;
   }
   if (descriptionLength > 180) {
@@ -174,7 +174,7 @@ export async function generateBusinessCard(profileData, outputPath = 'business_c
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      margin-right: 420px;
+      margin-right: ${descriptionLength > 250 ? '200px' : descriptionLength > 150 ? '240px' : '280px'};
       min-height: 0;
       position: relative;
       z-index: 10;
